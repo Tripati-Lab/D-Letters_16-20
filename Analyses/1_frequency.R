@@ -41,9 +41,16 @@ top.x.year <- rbind.data.frame(sub.16, sub.20)
 
 f.1 <- ggplot(data = top.x.year, aes(fill = year)) +
         geom_bar(aes(x = text, y = freq), stat = "identity") +
-        facet_wrap(~year, ncol = 1, scales = 'free_y')
+        facet_wrap(~year, ncol = 1, scales = 'free_y') +
+        theme(panel.grid.major = element_blank(),
+              axis.line = element_line(colour = "black"),
+              panel.grid.minor = element_blank(),
+              panel.background = element_blank(),
+              axis.text.x = element_text(angle = 45, hjust = 1),
+              panel.margin = unit(.01, "lines"),
+              panel.border = element_rect(color = "black", fill = NA, size = 0.5)) 
 
-ggsave(filename = here("Figures/f.1"), plot = f.1)  
+ggsave(filename = here("Figures/f.1.pdf"), plot = f.1, device = 'pdf')  
 
 ## Plot scatterplot frequencies
 
@@ -53,13 +60,17 @@ text.16.20.c.f.t <- text.16.20.c.f %>%
   arrange(data16, data20)
 
 f.2 <- ggplot(text.16.20.c.f.t, aes(data16, data20)) +
-        geom_point(alpha = 0.1, size = 2.5, width = 0.25, height = 0.25) +
-        geom_text(aes(label = text), check_overlap = TRUE, vjust = 1.5) +
+        geom_point(alpha = 0.5, size = 2.5, color = 'black') +
+        geom_text(aes(label = text), check_overlap = TRUE, vjust = 1.5, color = 'black') +
         scale_x_log10(labels = percent_format()) +
         scale_y_log10(labels = percent_format()) +
-        geom_abline(color = "red")
+        geom_abline(color = "blue") +
+        theme(panel.grid.major = element_blank(),
+              axis.line = element_line(colour = "black"),
+              panel.grid.minor = element_blank(),
+              panel.background = element_blank()) 
 
-ggsave(filename = here("Figures/f.2"), plot = f.2)  
+ggsave(filename = here("Figures/f.2.pdf"), plot = f.2, device = 'pdf', height = 10, width = 10)  
 
 
 summary(lm(text.16.20.c.f.t$data20 ~ text.16.20.c.f.t$data16))

@@ -8,8 +8,8 @@ library(tidyverse)
 library(tidytext)
 
 ## List files and keep them in a list
-data16.files <- list.files(here("Data/2016"), full.names = TRUE)
-data20.files <- list.files(here("Data/2020"), full.names = TRUE)
+data16.files <- list.files(here("Data/2016"), pattern = "OCR_", full.names = TRUE)
+data20.files <- list.files(here("Data/2020"), pattern = "OCR_", full.names = TRUE)
 
 files.16.20 <- list('data16' = data16.files,
                     'data20' = data20.files )
@@ -30,7 +30,7 @@ all(unlist(files.16.20) %in% unlist(lapply(text.16.20, `[`, 1)))
 remove_reg <- "&amp;|&lt;|&gt;"
 
 text.16.20.c <- lapply(text.16.20, function(y){
-                  y %>% 
+                  y %>%
                   mutate(text = str_remove_all(text, remove_reg)) %>%
                   filter(!text %in% stop_words$word,
                          !text %in% str_remove_all(stop_words$word, "'"),
@@ -42,8 +42,8 @@ names(text.16.20.c) <- names(files.16.20)
 ## Export pre-processed data
 
 lapply(seq_along(text.16.20.c), function(x){
-  write.csv(text.16.20.c[[x]], 
-            file = paste0(here("Data/preprocessed/"), 
+  write.csv(text.16.20.c[[x]],
+            file = paste0(here("Data/preprocessed/"),
                           names(text.16.20.c)[x],
                           '.csv'))
 })

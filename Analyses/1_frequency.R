@@ -19,9 +19,9 @@ load(here("Data/preprocessed/data_ws.RData"))
 
 text.16.20.c.b <- rbindlist(text.16.20.c, idcol = 'year')
 
-text.16.20.c.f <- text.16.20.c.b %>% 
-                  count(year, text, sort = TRUE) %>% 
-                  left_join(text.16.20.c.b %>% 
+text.16.20.c.f <- text.16.20.c.b %>%
+                  count(year, text, sort = TRUE) %>%
+                  left_join(text.16.20.c.b %>%
                               count(year, name = "total")) %>%
                   mutate(freq = n/total)
 
@@ -47,15 +47,15 @@ f.1 <- ggplot(data = top.x.year, aes(fill = year)) +
               panel.grid.minor = element_blank(),
               panel.background = element_blank(),
               axis.text.x = element_text(angle = 45, hjust = 1),
-              panel.margin = unit(.01, "lines"),
-              panel.border = element_rect(color = "black", fill = NA, size = 0.5)) 
+              panel.spacing = unit(.01, "lines"),
+              panel.border = element_rect(color = "black", fill = NA, size = 0.5))
 
-ggsave(filename = here("Figures/f.1.pdf"), plot = f.1, device = 'pdf')  
+ggsave(filename = here("Figures/f.1.pdf"), plot = f.1, device = 'pdf')
 
 ## Plot scatterplot frequencies
 
-text.16.20.c.f.t <- text.16.20.c.f %>% 
-  select(year, text, freq) %>% 
+text.16.20.c.f.t <- text.16.20.c.f %>%
+  select(year, text, freq) %>%
   pivot_wider(names_from = year, values_from = freq) %>%
   arrange(data16, data20)
 
@@ -68,9 +68,9 @@ f.2 <- ggplot(text.16.20.c.f.t, aes(data16, data20)) +
         theme(panel.grid.major = element_blank(),
               axis.line = element_line(colour = "black"),
               panel.grid.minor = element_blank(),
-              panel.background = element_blank()) 
+              panel.background = element_blank())
 
-ggsave(filename = here("Figures/f.2.pdf"), plot = f.2, device = 'pdf', height = 10, width = 10)  
+ggsave(filename = here("Figures/f.2.pdf"), plot = f.2, device = 'pdf', height = 10, width = 10)
 
 
 summary(lm(text.16.20.c.f.t$data20 ~ text.16.20.c.f.t$data16))

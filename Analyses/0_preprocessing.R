@@ -10,6 +10,11 @@ library(pluralize)
 library(stringi)
 library(tm)
 library(textstem)
+library(words)
+library(qdapDictionaries)
+
+## Useful functions
+is.word  <- function(x)
 
 ## List files and keep them in a list
 data16.files <- list.files(here("Data/2016"), pattern = "OCR_", full.names = TRUE)
@@ -38,10 +43,13 @@ text.16.20 <- lapply(text.16.20, function(x){
 all(unlist(files.16.20) %in% unlist(lapply(text.16.20, `[`, 1)))
 
 ## Remove additional words and non-characters
+acronyms <- read.csv(here("data/abbreviations/exclude_curated.csv"))
 remove_reg <- "&amp;|&lt;|&gt;"
 
 removeWords <- c("ci", 'TRUE', "e.g", "i.e", 'http', 'aaa', 'lalac', 'na',
-                 'aaastudies.org', 'www.change.org')
+                 'aaastudies.org', 'www.change.org', 'docsgooglecom', acronyms[,1])
+
+
 
 text.16.20.c <- lapply(text.16.20, function(y){
   y2 <-  y %>%
@@ -64,7 +72,11 @@ text.16.20.c <- lapply(text.16.20, function(y){
   y2$text <- stripWhitespace(y2$text)
   y2$text <- removeNumbers(y2$text)
   y2$text <- lemmatize_words(y2$text)
-  y2
+
+  ##Remove non-words
+  y2 <- y2[ y2$text %in% words::words$word,] ##Scrabble disctionary
+  y2 <- y2[ y2$text %in% GradyAugmented,]
+  return(y2)
 })
 
 names(text.16.20.c) <- names(files.16.20)

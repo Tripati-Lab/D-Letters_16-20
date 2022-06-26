@@ -70,7 +70,7 @@ summary(lm(text.16.20.c.f.t$data20 ~ text.16.20.c.f.t$data16))
 
 ## Save relevant objects
 
-#rm(list = ls()[!ls() %in% c("text.16.20.c", "text.16.20.c.f", "text.16.20.c.f.t")])
+rm(list = ls()[!ls() %in% c("text.16.20.c", "text.16.20.c.f", "text.16.20.c.f.t")])
 save.image(here("Data/preprocessed/data_ws.RData"))
 
 

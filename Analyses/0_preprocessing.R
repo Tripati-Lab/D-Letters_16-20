@@ -102,7 +102,7 @@ lapply(seq_along(text.16.20.c), function(x){
 
 ## Save relevant objects
 
-#rm(list = ls()[!ls() %in% c("text.16.20.c")])
+rm(list = ls()[!ls() %in% c("text.16.20.c")])
 save.image(here("Data/preprocessed/data_ws.RData"))
 
 

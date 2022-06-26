@@ -26,16 +26,8 @@ text.16.20.c.f <- text.16.20.c.b %>%
                   mutate(freq = n/total)
 
 ## Top X% of words per year
-threshold <- 0.1
-
-sub.16 <- text.16.20.c.f[text.16.20.c.f$year == 'data16',]
-sub.20 <- text.16.20.c.f[text.16.20.c.f$year == 'data20',]
-
-q.16 <- quantile(unlist(sub.16$freq), 1 - (threshold/100))
-q.20 <- quantile(unlist(sub.20$freq), 1 - (threshold/100))
-
-sub.16 <- sub.16[sub.16$freq >= q.16]
-sub.20 <- sub.20[sub.20$freq >= q.20]
+sub.16 <- text.16.20.c.f[text.16.20.c.f$year == 'data16',] %>% top_n(10)
+sub.20 <- text.16.20.c.f[text.16.20.c.f$year == 'data20',] %>% top_n(10)
 
 top.x.year <- rbind.data.frame(sub.16, sub.20)
 
@@ -78,7 +70,7 @@ summary(lm(text.16.20.c.f.t$data20 ~ text.16.20.c.f.t$data16))
 
 ## Save relevant objects
 
-rm(list = ls()[!ls() %in% c("text.16.20.c", "text.16.20.c.f", "text.16.20.c.f.t")])
+#rm(list = ls()[!ls() %in% c("text.16.20.c", "text.16.20.c.f", "text.16.20.c.f.t")])
 save.image(here("Data/preprocessed/data_ws.RData"))
 
 

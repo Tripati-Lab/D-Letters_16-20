@@ -12,9 +12,7 @@ library(tm)
 library(textstem)
 library(words)
 library(qdapDictionaries)
-
-## Useful functions
-is.word  <- function(x)
+library(lexicon)
 
 ## List files and keep them in a list
 data16.files <- list.files(here("Data/2016"), pattern = "OCR_", full.names = TRUE)
@@ -43,12 +41,19 @@ text.16.20 <- lapply(text.16.20, function(x){
 all(unlist(files.16.20) %in% unlist(lapply(text.16.20, `[`, 1)))
 
 ## Remove additional words and non-characters
-acronyms <- read.csv(here("data/abbreviations/exclude_curated.csv"))
+wte <- read.csv(here("data/words_to_exclude.csv"))
+
+lexicons <- c(lexicon::common_names,
+  lexicon::freq_first_names$Name,
+  lexicon::freq_last_names$Surname,
+  lexicon::pos_preposition,
+  lexicon::pos_interjections,
+  lexicon::pos_df_pronouns$pronoun)
+
 remove_reg <- "&amp;|&lt;|&gt;"
 
-removeWords <- c("ci", 'TRUE', "e.g", "i.e", 'http', 'aaa', 'lalac', 'na',
-                 'aaastudies.org', 'www.change.org', 'docsgooglecom', acronyms[,1])
-
+ToremoveWords <- c("ci", 'TRUE', "e.g", "i.e", 'http', 'aaa', 'lalac', 'na',
+                 'aaastudies.org', 'www.change.org', 'docsgooglecom', wte[,1], lexicons)
 
 
 text.16.20.c <- lapply(text.16.20, function(y){
@@ -64,18 +69,22 @@ text.16.20.c <- lapply(text.16.20, function(y){
   dat <- y2$text
   y2 <- y2[-grep("dat", iconv(dat, "latin1", "ASCII", sub="dat")),]
 
-  ##Remove extra words
-  y2 <- y2[! y2$text %in% removeWords,]
-
   ##Processing with tm
   y2$text <- removePunctuation(y2$text)
   y2$text <- stripWhitespace(y2$text)
   y2$text <- removeNumbers(y2$text)
   y2$text <- lemmatize_words(y2$text)
 
+  ##Remove extra words
+  y2 <- y2[! y2$text %in% ToremoveWords,]
+
   ##Remove non-words
-  y2 <- y2[ y2$text %in% words::words$word,] ##Scrabble disctionary
+  y2 <- y2[ y2$text %in% words::words$word,] ##Scrabble dictionary
   y2 <- y2[ y2$text %in% GradyAugmented,]
+
+  ##Fix words...
+  y2$text <- ifelse(y2$text == 'build', 'building', y2$text)
+
   return(y2)
 })
 
@@ -93,7 +102,7 @@ lapply(seq_along(text.16.20.c), function(x){
 
 ## Save relevant objects
 
-rm(list = ls()[!ls() %in% c("text.16.20.c")])
+#rm(list = ls()[!ls() %in% c("text.16.20.c")])
 save.image(here("Data/preprocessed/data_ws.RData"))
 
 

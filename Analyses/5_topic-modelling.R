@@ -39,8 +39,8 @@ lda.16.20.top <- lda.16.20.tidy %>%
 
 top.lda <- lda.16.20.top %>%
   mutate(term = reorder_within(term, beta, topic)) %>%
-  group_by(topic, term) %>%    
-  arrange(desc(beta)) %>%  
+  group_by(topic, term) %>%
+  arrange(desc(beta)) %>%
   ungroup() %>%
   ggplot(aes(beta, term, fill = as.factor(topic))) +
   geom_col(show.legend = FALSE) +
@@ -49,7 +49,7 @@ top.lda <- lda.16.20.top %>%
        x = expression(beta), y = NULL) +
   facet_wrap(~ topic, ncol = 4, scales = "free")
 
-ggsave(filename = here("Figures/top.lda.pdf"), plot = top.lda, device = 'pdf')
+ggsave(filename = here("Figures/top.lda.pdf"), plot = top.lda, device = 'pdf', height = 10, width = 10)
 
 
 lda.16.20.gamma <- tidy(lda.16.20, matrix = "gamma")
@@ -75,9 +75,9 @@ ggsave(filename = here("Figures/dist.prob.each.pdf"), plot = dist.prob.each, dev
 
 lda_gamma <- full_join(lda.16.20.gamma, text.16.20.c.b, by = c("document" = "filename"))
 
-lda_gamma <- lda_gamma %>% 
-  filter(gamma > 0.9) %>% 
-  distinct(document, .keep_all= TRUE) %>% 
+lda_gamma <- lda_gamma %>%
+  filter(gamma > 0.9) %>%
+  distinct(document, .keep_all= TRUE) %>%
   count(document, topic, year, sort = TRUE)
 
 top.lda.year <- lda_gamma %>%

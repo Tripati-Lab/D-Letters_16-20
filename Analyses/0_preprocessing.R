@@ -15,8 +15,8 @@ library(qdapDictionaries)
 library(lexicon)
 
 ## List files and keep them in a list
-data16.files <- list.files(here("Data/2016/OCR"), pattern = "OCR_", full.names = TRUE)
-data20.files <- list.files(here("Data/2020"), pattern = "OCR_", full.names = TRUE)
+data16.files <- list.files(here("Data/2016/OCR"), full.names = TRUE)
+data20.files <- list.files(here("Data/2020/Analyze"), pattern = "OCR_", full.names = TRUE)
 
 files.16.20 <- list('data16' = data16.files,
                     'data20' = data20.files )
@@ -24,11 +24,16 @@ files.16.20 <- list('data16' = data16.files,
 ## Read files
 text.16.20 <- lapply(files.16.20, function(y){
 
-  #Remove first line for 2016
+  if(all(grepl("2016", y, fixed = T))){
 
-  map_df(y, ~ data_frame(txt = pdf_text(.x)) %>%
+  map_df(y, ~ data_frame(txt = pdf_text(.x))[-1,] %>% ##Remove header for 2016
            mutate(filename = .x) %>%
            unnest_tokens(text, txt))
+  }else{
+    map_df(y, ~ data_frame(txt = pdf_text(.x)) %>%
+             mutate(filename = .x) %>%
+             unnest_tokens(text, txt))
+  }
 })
 
 

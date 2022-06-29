@@ -15,31 +15,51 @@ library(qdapDictionaries)
 library(lexicon)
 
 ## List files and keep them in a list
-data16.files <- list.files(here("Data/2016/OCR"), full.names = TRUE)
-data20.files <- list.files(here("Data/2020/Analyze"), pattern = "OCR_", full.names = TRUE)
+data60.files <- list.files(here("Data/1968/txt"), full.names = TRUE)
+data16.files <- list.files(here("Data/2016/2_OCR"), full.names = TRUE)
+data20.files <- list.files(here("Data/2020/4_txt"), full.names = TRUE)
 
-files.16.20 <- list('data16' = data16.files,
+files.16.20 <- list('data60' = data60.files,
+                    'data16' = data16.files,
                     'data20' = data20.files )
 
 ## Read files
-text.16.20 <- lapply(files.16.20, function(y){
-
-  if(all(grepl("2016", y, fixed = T))){
-
-  map_df(y, ~ data_frame(txt = pdf_text(.x))[-1,] %>% ##Remove header for 2016
-           mutate(filename = .x) %>%
-           unnest_tokens(text, txt))
-  }else{
-    map_df(y, ~ data_frame(txt = pdf_text(.x)) %>%
+text.16.20 <- lapply(seq_along(files.16.20), function(y){
+  
+  if (y == 1) {
+  
+   tx <- map_df(files.16.20[[y]], ~ data_frame(txt = readLines(.x)) %>%
              mutate(filename = .x) %>%
              unnest_tokens(text, txt))
+    
+    
   }
+  
+  if (y == 2) {
+    
+    tx <- map_df(files.16.20[[y]], ~ data_frame(txt = pdf_text(.x))[-1,] %>% ##Remove header for 2016
+             mutate(filename = .x) %>%
+             unnest_tokens(text, txt))
+    
+  }
+  
+  if (y == 3) {
+    
+    tx <- map_df(files.16.20[[y]], ~ data_frame(txt = readLines(.x)) %>%
+             mutate(filename = .x) %>%
+             unnest_tokens(text, txt))
+    
+  }
+  
+  return(tx)
+  
 })
 
 
 ##Singularize
 
 text.16.20 <- lapply(text.16.20, function(x){
+  x$textOriginal <- x$text
   x$text <- singularize(x$text)
   return(x)
 })

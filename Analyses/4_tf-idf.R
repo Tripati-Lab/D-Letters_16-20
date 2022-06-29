@@ -27,6 +27,7 @@ tf_idf.16.20.c.b <- lapply(text.16.20.c, function(y){
 
 tf_idf.16.20.c.b <- rbindlist(tf_idf.16.20.c.b, idcol = 'year')
 
+tf_idf.16.20.c.b$year <- factor(tf_idf.16.20.c.b$year, levels = c('data60', 'data16', 'data20'), labels = c("1968", "2016", "2020"))
 
 tf_idf <- tf_idf.16.20.c.b %>% 
   filter(!near(tf, 1)) %>%
@@ -40,9 +41,9 @@ tf_idf <- tf_idf.16.20.c.b %>%
   geom_col(show.legend = FALSE) +
   facet_wrap(~year, ncol = 3, scales = "free") +
   labs(title = "Highest tf-idf words in antiracism letters",
-       caption = "Comparison between 2016 and 2020 letters",
+       caption = "Comparison between 1968, 2016, and 2020 demand letters",
        x = "tf-idf", y = NULL)
 
-ggsave(filename = here("Figures/tf_idf.pdf"), plot = tf_idf, device = 'pdf')
+ggsave(filename = here("Figures/tf_idf.pdf"), plot = tf_idf, device = 'pdf', height = 8, width = 12)
 
 

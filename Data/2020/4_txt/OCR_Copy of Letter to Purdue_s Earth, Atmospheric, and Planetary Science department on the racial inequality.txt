@@ -1,80 +1,19 @@
-
-To whom it may concern: 
 The Black Lives Matter movement has shed necessary light on racial inequalities and injustices that have been ongoing for years towards Black, Indigenous, People of Color (BIPOC) and Non-Black People of Color (NBPOC). There is a lot to be done to change the systematic racism that is present within not only academia, but also within our department. We hope to have your help and support in doing so. The silence that we have heard from the department so far has been immensely disappointing for the students, but we hope that you are willing to learn and change just as we are, so that we can build a stronger, more inclusive and uplifting community. 
 Our department must do better to address the racial biases that we have and address the privilege that many of us have as a predominantly White department. Geoscience is one of the least diverse STEM fields at all levels and that has not improved in the past 40 years (e.g., Bernard and Cooperdock, 2018). We hope that our department can be an example of how a White-dominated department is changing to amplify the voices of the oppressed in academia, and that begins with ending our silence. We need to be better allies, we need to better educate ourselves on race, we need to actively change the way that we approach our recruitment process, and that is just a start. In this email, we want to highlight general tips for being more inclusive and better allies, as well as provide tangible examples of what we can do as a department, both now and in the coming years, to ensure that the dialogue that begins today becomes an integral part of how our department operates. 
 Departmental numbers on the admittance rate for the Earth, Atmospheric, and Planetary Sciences (EAPS) were unavailable via Purdue Data Digest (they have been contacted to get access to these numbers), but looking at the College of Science numbers will give a general idea of the admittance rate for different races/ethnicities. Within the various STEM fields, those encompassed under EAPS are even more White-dominated, so keep that in mind. The difference between White and Black students applying differs by an order of magnitude. Besides these numbers, the number of Black students in the overall student body in the College of Science has been 2% for the last 5 years. A primary reason for this lack of Black student representation is not a lack of interest but rather the systematic racism present in our fields. As a department, we must acknowledge this and, more importantly, change our current recruitment practices in order to be more welcoming to BIPOC and NBPOC. 
 College of Science student applicants vs. acceptance numbers for Fall 2019 
 Race/Ethnicity 
-# Applied 
-Percentage of total 
-applicants 
- # Admitted
- Percentage of total 
-admitted 
-students 
-White 
-3734 
-26.60% 
-2547 
-37.50% 
-Black 
-294 
-2.09% 
-126 
-1.86% 
-Latinx 
-533 
-3.80% 
-289 
-4.26% 
-
-
-
-American Indian or Alaska Native 7 
-7 
-0.05% 
-1 
-0.01% 
-
-Asian 
-2466 
-17.57% 
-1562 
-23.00% 
-International 
-6421 
-45.75% 
-1886 
-27.77% 
-Native Hawaiian or Other Pacific Islander 
-3 
-0.02% 
-2 
-0.03% 
-2 or more races 
-316 
-2.25% 
-214 
-3.15% 
-Unknown 
-262 
-1.87% 
-165 
-2.43% 
 In the EAPS Strategic Plan 2015-2019, Goal 4a is to increase diversity and lists some strategies to do so (https://www.eaps.purdue.edu/docs/pdfs/2015-2019_EAPS_strategic_plan.pdf). However, our enrollment numbers suggest that the strategies listed are not being fully put into action or are minimally effective. The Strategic Plan also lists specific metrics for assessing progress on the departmental level; however, such metrics have not been published, disseminated, or discussed by the department as a whole. 
 Because we want this letter to focus on solutions rather than the current state of affairs, we present two lists of department-specific, as well as general actions, that we feel are a good starting point. 
 These suggestions are sourced from national surveys and documentation, as well as the lived experience of BIPOC and other underrepresented groups. First, here are some specific actions the department can take to address these concerns both in the short-term and longer-term to establish a better, safer community: 
-1. Regular climate surveys and exit interviews. We need to establish a clear baseline for tracking undergraduate and graduate student experience in our department. There is currently no clear indicator of student experience, nor are there available demographic records. The department should be regularly collecting and publishing both qualitative and quantitative information about student quality of life to identify issues experienced by BIPOC students. If we don’t identify our baseline and get information on student 
-experience, then we cannot respond appropriately. Exit interviews should also be conducted, not just for students who graduate with their Master’s/PhD, but those who leave without completing their degrees (as underrepresented students tend to be more likely to leave without completing their degrees due to their experiences of harassment) to best characterize student experience. 
-2. Anonymous climate feedback form. To move from passive to active action, the department needs to be able to collect information on people’s experience of bias and harassment and take action on it. One potential option for doing this is an anonymous reporting system, 
-
-
-whose reports would be addressed by a standing body (see below). This itself is not a grievance solution mechanism, but it will increase awareness of where specific issues arise in the department. 
+1. Regular climate surveys and exit interviews. We need to establish a clear baseline for tracking undergraduate and graduate student experience in our department. There is currently no clear indicator of student experience, nor are there available demographic records. The department should be regularly collecting and publishing both qualitative and quantitative information about student quality of life to identify issues experienced by BIPOC students. If we don?t identify our baseline and get information on student 
+experience, then we cannot respond appropriately. Exit interviews should also be conducted, not just for students who graduate with their Master?s/PhD, but those who leave without completing their degrees (as underrepresented students tend to be more likely to leave without completing their degrees due to their experiences of harassment) to best characterize student experience. 
+2. Anonymous climate feedback form. To move from passive to active action, the department needs to be able to collect information on people?s experience of bias and harassment and take action on it. One potential option for doing this is an anonymous reporting system, whose reports would be addressed by a standing body (see below). This itself is not a grievance solution mechanism, but it will increase awareness of where specific issues arise in the department. 
 3. Establishment of a permanent standing body dedicated to advancing and addressing issues of bias, disciminition, and departmental welfare. While a Diversity Committee exists in the department, its activities are not publicized and its role and authority are unclear. Increasing the visibility of this committee, opening more 
 seats to graduate students, and hosting regular open meetings and forums so that the department as a whole can engage with the committee would be a good start towards giving this committee more power to improve the experience of 
 underrepresented folks in the department, both now and in the future. 
 4. Publicly posted flowcharts with community resources. Right now, there are no publicly listed resources for what to do if someone in the department is experiencing harassment. 
-This is something that was discussed in a previous EAPS GSA meeting, and a draft is attached separately. Having these flowchats for folks experiencing discrimination that lists their options for addressing and resolving their issues with departmental and/or university support is critical to allowing people’s complaints to actually be heard. 
+This is something that was discussed in a previous EAPS GSA meeting, and a draft is attached separately. Having these flowchats for folks experiencing discrimination that lists their options for addressing and resolving their issues with departmental and/or university support is critical to allowing people?s complaints to actually be heard. 
 5. Gender-neutral bathrooms. Black trans folks are often overlooked in discussions of Black struggles in academia. Our department can do better for Black trans folks and trans folks in general by establishing gender-neutral bathrooms within our section of the building. The current two gender-neutral bathrooms are extremely far away from all sections of our department and represent an extra burden on anyone who wishes to use them. 
 6. Implementing a departmental code of conduct. While our department has several guidelines for growth and success, including the strategic plan and the Individual 
 Development Plan (IDP) forms, we consider a code of conduct similar to those adopted by the American Geophysical Union and the American Astronomical Society, to be a critical step to ensuring that our agreed-upon guidelines for inclusive community-focused behavior are understood and consequences for violation are outlined. The presence of a clear and specific code of conduct, signed by the faculty, staff, and students in the department, will enable better reporting. Critically, a code of conduct should define language for 
@@ -82,28 +21,21 @@ consequences and enforcement. Modeling our code of conduct off of those already 
 7. Have BIPOC and NBPOC speakers for colloquium. Representation and support is important. Inviting BIPOC and NBPOC colloquium speakers, particularly those who are early in their career, is one small way to show that our department knows that their work and their science matters. This could easily be implemented this Fall when our lineup is entirely remote, thus eliminating any transportation issues. Additionally, the department should consider implementing annual or semesterly colloquia dedicated to discussion of Equity, Diversity, and Inclusion issues (i.e., bystander training). 
 Second, here are some general tips for how we can be better allies inside and outside of our department (Taken from 
 https://astrobites.org/2020/06/03/how-can-we-support-black-astronomers/): 
-1. Listen to Black people and amplify their voices. Work to understand what Black people are telling you, and work to listen without getting defensive. This can be difficult, particularly 
-
-
-because as [scientists] we’re often trained to defend our scientific results—but it’s important to listen, and to reflect on and learn from our mistakes. 
+1. Listen to Black people and amplify their voices. Work to understand what Black people are telling you, and work to listen without getting defensive. This can be difficult, particularly because as [scientists] we?re often trained to defend our scientific results?but it?s important to listen, and to reflect on and learn from our mistakes. 
 2. Check in with Black colleagues, friends, and students. This is a time of immense grief, pain and trauma for Black folks. Check in with the Black folks in your professional and personal circles; share your support and offer to do anything you can. 
-3. Talk to non-Black people about what’s happening. The burden to address issues of racism and anti-Blackness often falls on Black folks, which is labor-intensive and can be traumatic. Non-Black people have a responsibility to start these conversations. 
-4. Advocate and don’t gatekeep. Direct effort into advocating for Black students and folks in the field, both by supporting institutional efforts to improve equity and by stepping up for individual Black colleagues. On the flip side, do not engage in gatekeeping behaviors that make the field more exclusionary, such as those that continue to occur in introductory STEM courses and graduate admissions. 
-5. Educate ourselves. Don’t expect Black people to do the additional work of educating everyone else. Take time to read about the history of the oppression of Black people and the ways anti-Blackness manifests today. Focus on writings by Black folks. In an academic setting, one way to do this is to start an equity-focused journal club. If this is newer to you, this glossary is a good place to start. A list of further suggested reading is at the bottom of this post. 
+3. Talk to non-Black people about what?s happening. The burden to address issues of racism and anti-Blackness often falls on Black folks, which is labor-intensive and can be traumatic. Non-Black people have a responsibility to start these conversations. 
+4. Advocate and don?t gatekeep. Direct effort into advocating for Black students and folks in the field, both by supporting institutional efforts to improve equity and by stepping up for individual Black colleagues. On the flip side, do not engage in gatekeeping behaviors that make the field more exclusionary, such as those that continue to occur in introductory STEM courses and graduate admissions. 
+5. Educate ourselves. Don?t expect Black people to do the additional work of educating everyone else. Take time to read about the history of the oppression of Black people and the ways anti-Blackness manifests today. Focus on writings by Black folks. In an academic setting, one way to do this is to start an equity-focused journal club. If this is newer to you, this glossary is a good place to start. A list of further suggested reading is at the bottom of this post. 
 6. Support #BlackInSTEM efforts. Signal-boost Black students and researchers in STEM and share their work. This is critical both for supporting these individuals and for showing others that Black folks can succeed in the field; representation matters. For one great list of Black junior astronomers, check out this Twitter list compiled by Ashley Walker. 
-7. Speak up and push leadership to speak up. We should expect leaders in our spaces—department chairs, PIs, project/telescope/survey directors—to speak up and express support for Black folks under their leadership. Silence plays into the myth that our workplaces and identities can be separated. 
-8. Don’t expect productivity. During this time, all of us should be focusing our energy on supporting Black colleagues and anti-racism efforts. Black folks especially are processing, grieving, and fighting. Expecting academic productivity in these times of crisis ignores the experiences and needs of Black people. 
-9. Don’t take up space. During times of crisis for Black folks, focusing on unrelated issues can seem minimizing. This is especially true for academic-related matters which Black folks may not have time and energy for right now. 
+7. Speak up and push leadership to speak up. We should expect leaders in our spaces?department chairs, PIs, project/telescope/survey directors?to speak up and express support for Black folks under their leadership. Silence plays into the myth that our workplaces and identities can be separated. 
+8. Don?t expect productivity. During this time, all of us should be focusing our energy on supporting Black colleagues and anti-racism efforts. Black folks especially are processing, grieving, and fighting. Expecting academic productivity in these times of crisis ignores the experiences and needs of Black people. 
+9. Don?t take up space. During times of crisis for Black folks, focusing on unrelated issues can seem minimizing. This is especially true for academic-related matters which Black folks may not have time and energy for right now. 
 10. Donate. Many of us are in the privileged position of still receiving paychecks during this pandemic. Donate to Black justice organizations and to organizations that promote Black folks in STEM. Here are some suggestions: 
  ? Comprehensive list for donations: https://blacklivesmatters.carrd.co/#donate ? Bail funds across cities: 
  https://www.communityjusticeexchange.org/nbfn-directory 
  ? #IAm project: https://www.iamstemproject.org/ 
  ? Black Girls Code: https://www.blackgirlscode.com/ 
- ? Donate directly to Black students! Here’s a list on Twitter, compiled by Dr. Nicole Cabrera Salazar. 
-A Google document has been put together by one of the graduate students in the department to provide resources that can be utilized to educate ourselves on how to be better allies that can be 
-
-
-shared with anyone interested to learn. 
+ ? Donate directly to Black students! Here?s a list on Twitter, compiled by Dr. Nicole Cabrera Salazar. 
+A Google document has been put together by one of the graduate students in the department to provide resources that can be utilized to educate ourselves on how to be better allies that can be shared with anyone interested to learn. 
 We know that the change will take an adjustment and some time, but there is a need for change. We hope that you will stand up with us and be advocates for eliminating the systemic racism present within our fields and in our department. As a first step, we would like to invite everyone (faculty, students, and staff) to an open forum WebEx meeting (to be scheduled in a follow-up email) centered around a discussion of systemic racism and steps forward for change. We hope you will join us. 
-Sincerely, 
  

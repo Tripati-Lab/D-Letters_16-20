@@ -6,12 +6,31 @@ library(ggplot2)
 
 ##Read files and pre-process
 
-files <- list.files(here("Data/dedoose"), full.names = TRUE)
-ds <- read_excel(files)
-names(ds)[1] <- "Feature"
+files.PAM <- list.files(here("Data/dedoose"), pattern = "xls", full.names = TRUE)
+files.Des <- list.files(here("Data/dedoose"), pattern = "csv", full.names = TRUE)
 
-ds_long <- melt(setDT(ds), id.vars = c("Feature"), variable.name = "Code")
-ds_long <- cSplit(ds_long, 'Code', sep="_", type.convert=FALSE)
+ds <- read_excel(files.PAM)
+des <- read.csv(files.Des)
+colnames(ds)[1] <- "File"
+colnames(des)[1] <-"File"
+
+##Check that all the files are described
+ds$File[!ds$File %in% des$Title]
+
+##Change the date for the target time-frames
+des$Time.Frame <- ifelse(des$Time.Frame %in% c(2013, 2015, 2016), 2016, des$Time.Frame)
+
+##Merge descriptions and presence absence
+
+c.ds <- merge(ds, des, by = "File", all.x = TRUE)
+c.ds <- c.ds[!duplicated(c.ds$File),]
+
+table(c.ds$Time.Frame)
+
+## Get frequencies for major topics
+
+ds_long <- melt(setDT(c.ds), id.vars = c(1, 94:104), variable.name = "Topic")
+ds_long <- cSplit(ds_long, 'Topic', sep="_", type.convert=FALSE)
 
 repPrevious <- function(targetVector){
   for(x in seq_along(targetVector)){
@@ -24,114 +43,62 @@ repPrevious <- function(targetVector){
 }
 
 
-ds_long$Code_1 <- repPrevious(ds_long$Code_1)
-ds_long$Code_2 <- repPrevious(ds_long$Code_2)
-ds_long$Code_3 <- repPrevious(ds_long$Code_3)
+ds_long$Topic_1 <- repPrevious(ds_long$Topic_1)
+ds_long$Topic_2 <- repPrevious(ds_long$Topic_2)
+ds_long$Topic_3 <- repPrevious(ds_long$Topic_3)
 ds_long <- as.data.frame(ds_long)
 
-# Level number
+freq.global <- data.frame(Freq =sapply(unique(ds_long$Topic_1), function(x){
+  tsds <- ds_long[ds_long$Topic_1 == x,]
+  tsds <- as.data.frame(table(tsds$File, tsds$value))
+  100 * length(which(tsds[tsds$Var2 == 1,"Freq"] > 0))/nrow(c.ds)
+}))
+
+freq.global[order(freq.global$Freq),]
+
+freq.time <- lapply(unique(ds_long$Topic_1), function(x){
+  tsds <- ds_long[ds_long$Topic_1 == x,]
+  
+  targettf <- unique(tsds$Time.Frame)
+  tf <- sapply(targettf, function(y){
+  tsds <- tsds[tsds$Time.Frame == y,]
+  tsds <- as.data.frame(table(tsds$File, tsds$value))
+  100 * length(which(tsds[tsds$Var2 == 1,"Freq"] > 0))/nrow(c.ds[c.ds$Time.Frame == y,])
+})
+  names(tf) <- targettf
+  tf
+  })
+
+freq.time <- do.call(rbind, freq.time)
+row.names(freq.time) <- row.names(freq.global)
+freq.time <- as.data.frame(freq.time)
+
+# (Some quick regression models...)
+
+summary(lm(freq.time$`1986` ~ freq.time$`2020`))
+summary(lm(freq.time$`1986`~ freq.time$`2016`))
+summary(lm(freq.time$`2020`~ freq.time$`2016`))
+
+plot(freq.time$`1986` ~ freq.time$`2020`)
+plot(freq.time$`1986`~ freq.time$`2016`)
+plot(freq.time$`2020`~ freq.time$`2016`)
 
 
-ds_long$level <- sapply(1:nrow(ds_long), function(x){
-  ts <- unlist(ds_long[x,grep("Code", names(ds_long))])
-  length(na.omit(ts))
+## Get the frequencies for nested topics
+
+freq.global.topics <- lapply(unique(ds_long$Topic_1), function(x){
+  tsds <- ds_long[ds_long$Topic_1 == x,]
+  tsds2 <- na.omit(unique(tsds$Topic_2))
+  if(length(tsds2)>0){
+ retnestedF <- unlist(lapply(tsds2, function(y){
+    tsds3 <- tsds[tsds$Topic_2 == y, ] 
+    tsds3 <- tsds3[!is.na(tsds3$value),]
+    tsds <- as.data.frame(table(tsds3$File, tsds3$value))
+    100 * length(which(tsds[tsds$Var2 == 1,"Freq"] > 0))/nrow(tsds3)
+  }))
+cbind(Topic = x, Subtopic = tsds2, data.frame(retnestedF))
+}
 })
 
-##Combine 2013, 2015, 2016
-
-ds_long <- cSplit(ds_long, 'Feature', sep=":", type.convert=FALSE)
-ds_long$Feature_3 <- factor(ifelse(ds_long$Feature_2 %in% c(2013, 2015, 2016), 2016, ds_long$Feature_2))
-
-library(dplyr)
-ds_long <- ds_long[,-"Feature_2"] %>%
-  group_by(Code_1, Code_2 , Code_3 , level ,
-           Feature_1 ,  Feature_3) %>%
-  summarise_all(sum)
-
-
-##Plot those in Lev 1 with >70%
-
-sum_lev1 <- ds_long %>%
-  group_by(Code_1,
-           Feature_1,  Feature_3) %>%
-  summarise(targetV = sum(value))%>%
-  mutate(countT= sum(targetV)) %>%
-  mutate(per=(100*targetV/countT))
-
-
-## Plot the top 3 per year
-
-sum_lev1 <- ds_long %>%
-  group_by(Code_1,
-           Feature_1,  Feature_3) %>%
-  summarise(targetV = sum(value))
-
-tf <- sum_lev1 %>%
-  group_by(Feature_3) %>%
-  filter(Feature_1 == "Time Frame") %>%
-  mutate(countT= sum(targetV)) %>%
-  mutate(per=(100*targetV/countT)) %>%
-  arrange_(~ desc(targetV)) %>%
-  group_by(Feature_3) %>%
-  do(head(., n = 3))
-
-ggplot(tf, aes(y = reorder(Code_1, per), x = per, fill = Feature_3)) +
-  geom_bar(stat="identity", width = 0.7) +
-  facet_wrap(~ Feature_3)
-
-
-## Categories vs year vs subcategories
-
-sum_lev2 <- ds_long %>%
-  group_by(Code_1, Code_2,
-           Feature_1,  Feature_3) %>%
-  summarise(targetV = sum(value))
-
-tf2 <- sum_lev2 %>%
-  group_by(Feature_3, Code_2) %>%
-  filter(Feature_1 == "Time Frame")
-
-tf3 <- tf2 %>%
-  group_by(Feature_3, Code_1) %>%
-  mutate(countT = sum(targetV)) %>%
-  mutate(per=(100*targetV/countT)) %>%
-  arrange_(~ desc(targetV)) %>%
-  do(head(., n = 3)) %>%
-  na.omit()
-
-## Select those that are in the top per year
-
-tf3Sel <- tf3[paste0(tf3$Code_1,"_", tf3$Feature_3) %in% paste0(tf$Code_1,"_", tf$Feature_3),]
-
-completeRF <- rbind(tf, tf3Sel)
-
-
-library(ggplot2)
-library(forcats)
-
-ggplot(mydat, aes(y = reorder(GO_term, as.numeric(Type)), x = Number, size = Number)) + geom_point(aes(color = Class), alpha = 1.0) +
-  geom_tile(aes(width = Inf, fill = Type), alpha = 0.4) +
-  scale_fill_manual(values = c("green", "red", "blue"))
-
-
-##Venn diagram
-
-
-
-tf.expanded <- tf[rep(row.names(tf), tf$targetV), ]
-
-library(venneuler)
-library(grid)
-v <- venneuler(data.frame(tf.expanded[,c("Feature_3", "Code_1")]))
-par(cex = 0.7)
-plot(v, main = "Modes of Senior Transportation (Toronto 2017 Survey)", cex.main = 1.5)
-grid.text(
-  "@littlemissdata",
-  x = 0.52,
-  y = 0.15,
-  gp = gpar(
-    fontsize = 10,
-    fontface = 3
-  )
-)
+freq.global.topics <- do.call(rbind,freq.global.topics)
 

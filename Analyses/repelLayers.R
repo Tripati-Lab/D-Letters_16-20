@@ -1,9 +1,12 @@
 # https://stackoverflow.com/questions/71686257/how-do-i-make-ggrepel-move-some-labels-outside-us-map-boundaries
 
-college_layers <- function(d, label) {
+college_layers <- function(d, label, alLeft = TRUE) {
+
   xlimz <- if (all(d$x > 0)) {c(2.5e6, NA)} else {c(NA, -2e6)}
 
-  geom_text_repel(
+
+
+  geom_label_repel(
     data = d,
     aes(x, y, label = label),
     xlim = xlimz,
@@ -17,6 +20,7 @@ college_layers <- function(d, label) {
     min.segment.length = 0.1,
     segment.color = "black",
     segment.size = 1,
-    seed = 1000
+    seed = 1000,
+    hjust=if(alLeft){0}else{1}
   )
 }

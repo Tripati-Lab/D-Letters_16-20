@@ -294,7 +294,7 @@ Divisions.freqs <- lapply(unique(ds_long$Topic_1), function(x){
 
 Divisions.freqs <- do.call(rbind, Divisions.freqs)
 row.names(Divisions.freqs) <- row.names(freq.global)
-
+Divisions.freqs <- as.data.frame(Divisions.freqs)
 
 write.csv(Divisions.freqs, here("Data/dedoose/Results/7. Divisions.freqs.csv"))
 
@@ -318,11 +318,11 @@ library(ggspatial)
 library(usmap)
 library(sf)
 library(ggplot2)
-
+library(viridis)
 
 source(here("Analyses/repelLayers.R"))
 
-# Summarize to DIVISION polygons, see sf::st_union
+# Get the states and information on the divisions and regions
 sts <- tigris::states() %>%
   filter(!STUSPS %in% c('HI', 'AK', 'PR', 'GU', 'VI', 'AS', 'MP'))
 
@@ -330,34 +330,59 @@ div <- sts %>%
   group_by(DIVISION) %>%
   summarize()
 
-Divisions.freqs <- as.data.frame(Divisions.freqs)
+##Estimate the number of letters per division
+Lettercount <- merge(ts.areas, des, by.x = "abb", by.y = "State_AB")
+Lettercount <- as.data.frame(table(counts$division))
+colnames(Lettercount) <- c("Division", "NLetters")
 
+##Get the top per division
+
+Divisions.freqs$Topic <- row.names(Divisions.freqs)
+
+TopDivision <- lapply(1:(ncol(Divisions.freqs)-1), function(x){
+  target <- Divisions.freqs[ Divisions.freqs[,x] %in% head( sort(unique(Divisions.freqs[,x]), decreasing = T) ,1), ]
+
+  ##If only 1, check the top 2
+  target <- if(nrow(target) == 1){
+    Divisions.freqs[ Divisions.freqs[,x] %in% head( sort(unique(Divisions.freqs[,x]), decreasing = T) ,2), ]
+  }else{
+    target
+  }
+  target <- target[order(target[,x], decreasing = TRUE),]
+
+  cbind.data.frame(Division = names(Divisions.freqs)[x], Top3= paste(
+  paste0(1:nrow(target),". ",target$Topic," (", round(target[,x],1) , "%)")
+  , collapse = "\n"))
+}
+)
+TopDivision <- do.call(rbind, TopDivision)
+
+##(If We need to plot some frequencies per state...)
 Divisions.freqs.reshaped <- Divisions.freqs %>%
   mutate("Topic" = rownames(Divisions.freqs)) %>%
   gather(key = Division, value=Freq, -Topic)
-
 targetDiv <- Divisions.freqs.reshaped[Divisions.freqs.reshaped$Topic == "Organizational Commitment to Change",]
 targetDiv <- merge(targetDiv, divTrans, by.x = "Division", by.y = "name")
-
 div <- merge(div, targetDiv, by.x="DIVISION", by.y = "number")
+div <- merge(div, TopDivision, by.x="Division", by.y = "Division")
+div <- merge(div, Lettercount, by.x="Division", by.y = "Division")
 
+
+##Get the centroids per region
 centroids <- st_centroid(div) %>%
   st_geometry() %>% as(., "Spatial")
 
-centroids <- cbind.data.frame(centroids, label = div$Topic)
+centroids <- cbind.data.frame(centroids, label = div$Top3)
 colnames(centroids)[c(1:2)] <- c("lon", "lat")
-centroids = cbind.data.frame(centroids, Freq = div$Freq)
-
+centroids = cbind.data.frame(centroids, Freq = div$NLetters, division = div$Division)
 d.coord <- usmap_transform(centroids)
 
+##Generate the map
 d   <- us_map("states")
 sts <- tigris::states()
-
 states <- as.data.frame(sts)
 correspondence <- merge(dfRegion, ts.areas, by.x = "STUSPS", by.y = "abb")
-
 states <- merge(states, correspondence, by.x = "STUSPS", by.y = "STUSPS")
-
 d <- merge(d, states, by.x="abbr", by.y="STUSPS")
 
 USS <- lapply(split(d, d$full), function(x) {
@@ -377,16 +402,38 @@ states2 <- states2[order(match(states2$NAME,names(USA))),c("STUSPS","NAME","regi
 USA  <- st_sf(data.frame(states2, geometry = USA))
 USA$centroids <- st_centroid(USA$geometry)
 
-pdf(here("Data/dedoose/Results/8. Map.pdf"), 12, 6)
+cols <- palette.colors(n=9, palette = "Tableau 10")
+cols[8] <- "#56B4E9"
+cols[9] <- "#D55E00"
+names(cols) <- d.coord$division
+
+
+pdf(here("Data/dedoose/Results/8. Map.pdf"), 15, 6)
 ggplot(USA) +
   geom_sf(aes(fill = division))+
-  theme_void()+
   ggspatial::geom_spatial_point(data = d.coord,
-                                aes(x = lon, y = lat))+
-  college_layers(d = filter(d.coord, x > 0), label = label)+
-  college_layers(d = filter(d.coord, x < 0), label = label)+
-  expand_limits(x = c(-3.9e6, 4.6e6),
-                y = c(-3e6, 2e6))
+                                aes(x = lon, y = lat, size=Freq))+
+  college_layers(d = filter(d.coord, x > 0), label = label, alLeft = TRUE)+
+  college_layers(d = filter(d.coord, x < 0), label = label, alLeft = TRUE)+
+  expand_limits(x = c(-7e6, 7e6),
+                y = c(-3e6, 2e6))+
+  scale_fill_manual(values = cols, name= "division")+
+  theme_minimal()+
+  theme(
+    #text = element_text(family = "Ubuntu Regular", color = "#22211d"),
+    axis.line = element_blank(),
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks = element_blank(),
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    panel.grid.major = element_line(color = "#ebebe5", size = 0.2),
+    panel.grid.minor = element_blank(),
+    plot.background = element_rect(fill = "#f5f5f2", color = NA),
+    panel.background = element_rect(fill = "#f5f5f2", color = NA),
+    legend.background = element_rect(fill = "#f5f5f2", color = NA),
+    panel.border = element_blank(),
+    legend.position="bottom"
+  )
 dev.off()
-
 

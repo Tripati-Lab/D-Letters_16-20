@@ -66,7 +66,7 @@ colnames(Lettercount) <- c("Division", "NLetters")
 Divisions.freqs$Topic <- row.names(Divisions.freqs)
 
 TopDivision <- lapply(1:(ncol(Divisions.freqs)-1), function(x){
-  target <- Divisions.freqs[ Divisions.freqs[,x] %in% head( sort(unique(Divisions.freqs[,x]), decreasing = T) ,5), ]
+  target <- Divisions.freqs[ Divisions.freqs[,x] %in% head( sort(unique(Divisions.freqs[,x]), decreasing = T) ,3), ]
   target <- target[order(target[,x], decreasing = TRUE),]
   target <- target[target[,x] > 0,]
 
@@ -132,15 +132,15 @@ divs<-sort(divs)
 USA$division <- factor(USA$division, levels = divs)
 
 
-pdf(here("Data/dedoose/Results/9. Map.2016.pdf"), 20, 15)
+pdf(here("Data/dedoose/Results/9. Map.2016.pdf"), 18, 10)
 ggplot(USA) +
   geom_sf(aes(fill = division))+
   ggspatial::geom_spatial_point(data = d.coord,
                                 aes(x = lon, y = lat, size=Freq))+
   college_layers(d = filter(d.coord, x > 26e4), label = label, Threshold = 26e4)+
   college_layers(d = filter(d.coord, x < 26e4), label = label, Threshold = 26e4)+
-  expand_limits(x = c(-10e6, 10e6),
-                y = c(-10e6, 10e6))+
+  expand_limits(x = c(-7e6, 7e6),
+                y = c(-7e6, 7e6))+
   scale_fill_manual(values = cols, name= "division")+
   theme_minimal()+
   theme(

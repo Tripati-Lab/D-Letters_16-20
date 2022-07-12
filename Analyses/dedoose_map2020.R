@@ -37,7 +37,8 @@ Divisions.freqs <- lapply(unique(ds_long$Topic_1), function(x){
 })
 
 Divisions.freqs <- do.call(rbind, Divisions.freqs)
-row.names(Divisions.freqs) <- row.names(freq.global)
+Divisions.freqs <- as.data.frame(Divisions.freqs)
+row.names(Divisions.freqs) <- freq.global$Topic
 Divisions.freqs <- as.data.frame(Divisions.freqs)
 
 write.csv(Divisions.freqs, here("Data/dedoose/Results/7. Divisions.freqs.2020.csv"))
@@ -95,9 +96,6 @@ centroids <- st_centroid(div) %>%
 centroids <- cbind.data.frame(centroids, label = div$Top3)
 colnames(centroids)[c(1:2)] <- c("lon", "lat")
 centroids = cbind.data.frame(centroids, Freq = div$NLetters, division = div$Division)
-d.coord[d.coord$division == 'Pacific', 'lon'] <- -300
-
-d.coord <- usmap_transform(centroids)
 
 
 ##Generate the map
@@ -141,7 +139,7 @@ ggplot(USA) +
                                 aes(x = lon, y = lat, size=Freq))+
   college_layers(d = filter(d.coord, x > 26e4), label = label, Threshold = 26e4)+
   college_layers(d = filter(d.coord, x < 26e4), label = label, Threshold = 26e4)+
-  expand_limits(x = c(-7e6, 7e6),
+  expand_limits(x = c(-10e6, 10e6),
                 y = c(-7e6, 7e6))+
   scale_fill_manual(values = cols, name= "division")+
   theme_minimal()+

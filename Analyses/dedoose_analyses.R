@@ -8,7 +8,10 @@ library(bbplot) #devtools::install_github('bbc/bbplot')
 ##Read files and pre-process
 
 files.PAM <- list.files(here("Data/dedoose"), pattern = "xls", full.names = TRUE)
-files.Des <- list.files(here("Data/dedoose"), pattern = "csv", full.names = TRUE)
+files.Des <- list.files(here("Data/dedoose"), pattern = "Descriptors.csv", full.names = TRUE)
+updated.names <- list.files(here("Data/dedoose"), pattern = "names.csv", full.names = TRUE)
+updated.names.data <- read.csv(updated.names)
+
 
 ds <- read_excel(files.PAM)
 des <- read.csv(files.Des)
@@ -81,6 +84,13 @@ ds_long$Topic_2 <- repPrevious(ds_long$Topic_2)
 ds_long$Topic_3 <- repPrevious(ds_long$Topic_3)
 ds_long <- as.data.frame(ds_long)
 
+## Update names
+
+ds_long$Topic_1 <- factor(ds_long$Topic_1, levels = updated.names.data$Original, labels = updated.names.data$UpdatedName)
+
+#test <- ds_long[ds_long$Time.Frame == 1968,]
+#test <- test[test$value == 1,]
+
 ## Get frequencies for major topics
 
 library(dplyr)
@@ -89,6 +99,8 @@ freq.global <- data.frame(Freq =sapply(unique(ds_long$Topic_1), function(x){
   tsds <- ds_long[ds_long$Topic_1 == x & is.na(ds_long$Topic_2),]
   100*length(which(tsds$value == 1))/nrow(c.ds)
 }))
+
+freq.global <- cbind.data.frame(Topic = unique(ds_long$Topic_1), freq.global)
 
 write.csv(freq.global, here("Data/dedoose/Results/1. freq.global.csv"))
 
@@ -106,6 +118,8 @@ freq.time <- lapply(unique(ds_long$Topic_1), function(x){
 
 freq.time <- do.call(rbind, freq.time)
 row.names(freq.time) <- row.names(freq.global)
+
+freq.time <- cbind.data.frame(Topic = unique(ds_long$Topic_1), freq.time)
 
 write.csv(freq.time, here("Data/dedoose/Results/2. freq.time.csv"))
 
@@ -150,7 +164,7 @@ library('bbplot')
 library("stringr")
 
 bar_df <- freq.global %>%
-  mutate("Topic" = rownames(freq.global)) %>%
+  #mutate("Topic" = rownames(freq.global)) %>%
   arrange(-Freq, .by_group = TRUE) %>%
   head(5)
 
@@ -165,7 +179,7 @@ gbars <- ggplot(bar_df, aes(y = Topic, x = Freq)) +
   bbc_style() +
   labs(title = "Primary Anti-Racism Demands across\nHigh. Educ. institutions in the US",
        subtitle = "Letters refect major waves of activism between 1960's and 2020's") +
-  scale_y_discrete(labels = function(x) str_wrap(x, width = 20))+
+  scale_y_discrete(labels = function(x) str_wrap(x, width = 50))+
   #scale_x_continuous(labels = scales::percent) +
   geom_label(aes(y = Topic, x = Freq+7, label = paste0(round(Freq, 0),"%")),
              hjust = 1,
@@ -180,12 +194,12 @@ gbars <- ggplot(bar_df, aes(y = Topic, x = Freq)) +
         axis.text.x=element_blank(),
         axis.ticks.x=element_blank())
 
-pdf(here("Data/dedoose/Results/4. Barplot.pdf"), 12, 6)
+pdf(here("Data/dedoose/Results/4. Barplot.pdf"), 14, 6)
 print(gbars)
 dev.off()
 
 
-jpeg(here("Data/dedoose/Results/4. Barplot.jpeg"), 12, 6, units = "in", res = 300)
+jpeg(here("Data/dedoose/Results/4. Barplot.jpeg"), 14, 6, units = "in", res = 300)
 print(gbars)
 dev.off()
 
@@ -194,7 +208,7 @@ dev.off()
 
 library(tidyr)
 grouped.time.or <- freq.time %>%
-  mutate("Topic" = rownames(freq.time)) %>%
+  #mutate("Topic" = rownames(freq.time)) %>%
   gather(key = Year, value=Freq, -Topic)
 
 top3 <-  grouped.time.or  %>%
@@ -204,7 +218,7 @@ top3 <-  grouped.time.or  %>%
 grouped.time <- grouped.time.or[grouped.time.or$Topic %in% top3$Topic,]
 
 grouped.time$alpha <- ifelse(paste0(grouped.time$Topic, grouped.time$Year) %in% paste0(top3$Topic, top3$Year),
-       1, 0.5)
+       1, 0.2)
 
 grouped.time$Year <- factor(grouped.time$Year)
 grouped.time$Topic <- factor(grouped.time$Topic)
@@ -217,7 +231,7 @@ gbars.time <-  ggplot(grouped.time, aes(y = Topic, x = Freq, fill = Year)) +
   bbc_style() +
   labs(title = "Primary Anti-Racism Demands in the US over time",
        subtitle = "Sinthesys of major waves of activism in 1968, 2016, and 2020") +
-  scale_y_discrete(labels = function(x) str_wrap(x, width = 20))+
+  scale_y_discrete(labels = function(x) str_wrap(x, width = 40))+
   #scale_x_continuous(labels = scales::percent) +
   geom_text(aes(y = (Topic), x = Freq+1, label = paste0(round(Freq, 0),"%")  ),
              hjust = 0,
@@ -274,7 +288,7 @@ Region.freqs <- lapply(unique(ds_long$Topic_1), function(x){
 })
 
 Region.freqs <- do.call(rbind, Region.freqs)
-row.names(Region.freqs) <- row.names(freq.global)
+row.names(Region.freqs) <- freq.global$Topic
 
 write.csv(Region.freqs, here("Data/dedoose/Results/6. Region.freqs.csv"))
 

@@ -135,6 +135,54 @@ plot(freq.time$`1968` ~ freq.time$`2020`)
 plot(freq.time$`1968`~ freq.time$`2016`)
 plot(freq.time$`2020`~ freq.time$`2016`)
 
+colnames(freq.time)[2:4] <- paste0("Year_", colnames(freq.time)[2:4])
+
+
+freq.time1 <- freq.time %>%
+  gather(key = Year, value=Freq, -Topic, -Year_1968) 
+freq.time1$Plot = "A."
+colnames(freq.time1)[c(2, 4)] <- c("x", "y")
+
+freq.time2 <- data.frame(Topic = freq.time$Topic, x=freq.time$Year_2016, y=freq.time$Year_2020, Year = NA,
+                         Plot = "B.")
+
+freq.time.rep <- rbind.data.frame(
+freq.time1[,c("Topic", "x", "y", "Year", "Plot")],
+freq.time2)
+
+freq.time.rep$Topic <- as.character(freq.time.rep$Topic)
+
+topTopics <- as.character(freq.global[order(freq.global$Freq, decreasing = TRUE)[1:5],"Topic"])
+
+pplot_2 <- ggplot(freq.time.rep, aes(x=x, y=y, label = ifelse(freq.time.rep$Topic %in% topTopics, str_wrap(freq.time.rep$Topic, width = 20), ""))) + 
+  geom_point( aes(color = Year), size = 3) + 
+  geom_smooth(aes(fill=Year, color= Year), method="lm", se = FALSE) +
+  geom_abline(intercept = 0, slope = 1, lty = 3) +
+  bbc_style() +
+  labs(title = "Temporal patterns in major demand topics over time",
+       subtitle = "While major themes are similar across time periods, least frequent\n demands tend to be time-specific") +
+  geom_hline(yintercept = 0, size = 1, colour="#333333") +
+  geom_vline(xintercept = 0, size = 1, colour="#333333") + 
+  labs(x = "Demand frequency in 1960s", y = "Demand frequency post 2000s") +
+  xlim(0,100) +
+  ylim(0,100) + 
+  facet_grid(~ Plot, scales = "free") + 
+  geom_text_repel(
+    min.segment.length = 0, seed = 42, box.padding = 0.5,
+    aes(color= Year)
+    )  +
+theme(axis.title = element_text(),
+      strip.background = element_blank(),
+      strip.placement = "outside")
+
+pdf(here("Data/dedoose/Results/10. TemporalTrendsMajorTopics.pdf"), 11, 8)
+print(pplot_2)
+dev.off()
+
+jpeg(here("Data/dedoose/Results/10. TemporalTrendsMajorTopics.jpeg"), 12, 8, units = "in", res = 300)
+print(pplot_2)
+dev.off()
+
 
 ## Get the frequencies for nested topics
 

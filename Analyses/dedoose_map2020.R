@@ -12,6 +12,7 @@ library(usmap)
 library(sf)
 library(ggplot2)
 library(viridis)
+library(here)
 
 set.seed(3)
 
@@ -96,6 +97,7 @@ centroids <- st_centroid(div) %>%
 centroids <- cbind.data.frame(centroids, label = div$Top3)
 colnames(centroids)[c(1:2)] <- c("lon", "lat")
 centroids = cbind.data.frame(centroids, Freq = div$NLetters, division = div$Division)
+d.coord <- usmap_transform(centroids)
 
 
 ##Generate the map

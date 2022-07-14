@@ -125,7 +125,7 @@ cols[9] <- "#D55E00"
 names(cols) <- sort(levels(USA$division))
 
 
-pdf(here("Data/dedoose/Results/9. Map.pdf"), 20, 15)
+pdf(here("Data/dedoose/Results/9. Map.pdf"), 18, 10)
 ggplot(USA) +
   geom_sf(aes(fill = division))+
   ggspatial::geom_spatial_point(data = d.coord,
@@ -133,7 +133,7 @@ ggplot(USA) +
   college_layers(d = filter(d.coord, x > 26e4), label = label, Threshold = 26e4)+
   college_layers(d = filter(d.coord, x < 26e4), label = label, Threshold = 26e4)+
   expand_limits(x = c(-10e6, 10e6),
-                y = c(-10e6, 10e6))+
+                y = c(-7e6, 7e6))+
   scale_fill_manual(values = cols, name= "division")+
   theme_minimal()+
   theme(
